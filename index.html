@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <title>Github Issue Tracker</title>
     <style>
       *,
@@ -19,7 +20,7 @@
   </head>
 
   <body>
-    <!-- Login Page -->
+    <!-- Login Screen -->
     <section data-screen="login" class="h-screen bg-[#F8FAFC] flex items-center justify-center">
       <div
         class="bg-white shadow-md flex flex-col rounded-md border border-gray-100 p-6 items-center min-w-130"
@@ -68,6 +69,43 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- Issues Screen -->
+    <section data-screen="issue" class="hidden">
+      <!-- navbar -->
+      <nav class="border border-gray-100 shadow-md py-4 bg-white">
+        <div class="container mx-auto flex items-center gap-4">
+          <img src="/assets/github-logo.png" alt="Github Logo" class="size-8" />
+          <h2 class="text-2xl font-semibold">Github Issue Tracker</h2>
+          <div class="ml-auto relative">
+            <input
+              data-input="search"
+              type="text"
+              placeholder="Search Issues..."
+              class="border border-gray-100 px-4 py-2 rounded-md focus:outline-none focus:border-[#4A00FF] focus:ring-1 focus:ring-[#4A00FF] pl-10"
+            />
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-5 absolute top-1/2 left-3 -translate-y-1/2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
+            </svg>
+          </div>
+          <button data-button="search" class="bg-[#4A00FF] text-white py-2 font-semibold px-4 rounded-md">
+            Search
+          </button>
+        </div>
+      </nav>
     </section>
   </body>
 </html>

@@ -2,8 +2,11 @@
 
 // documents
 const loginScreen = document.querySelector(`[data-screen="login"]`);
+const issuesScreen = document.querySelector(`[data-screen="issue"]`);
 const loginForm = document.querySelector(`[data-form="login"]`);
 const loginFormErrorNode = document.querySelector(`[data-error="login-form-error-node"]`);
+const searchInput = document.querySelector(`[data-input="search"]`);
+const searchButton = document.querySelector(`[data-button="search"]`);
 
 // const variables
 const USER_NAME = "admin";
@@ -34,9 +37,14 @@ loginForm.addEventListener("submit", (e) => {
 
   if (username === USER_NAME && password === PASSWORD) {
     loginScreen.classList.add("hidden");
+    issuesScreen.classList.remove("hidden");
   }
 
   loginFormErrorNode.innerHTML = `
     <p class="text-red-500 text-sm font-medium">Invalid Credentials, Please try again</p>
   `;
 });
+
+// for now to show the issue screen without login, later we will remove this code and add the login functionality
+loginScreen.classList.add("hidden");
+issuesScreen.classList.remove("hidden");
