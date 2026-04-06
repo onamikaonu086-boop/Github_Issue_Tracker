@@ -146,7 +146,7 @@ function renderIssues(issues) {
       <div class="my-4 flex flex-wrap gap-2">
         ${labelsElements.join("")}
       </div>
-      <div class="mt-auto flex flex-col gap-1 border-t border-gray-100 pt-4">
+      <div class="mt-auto flex flex-col gap-1 border- border-gray-100 pt-4">
         <p class="text-gray-500"># ${author}</p>
         <p class="text-gray-500">${new Date(createdAt)?.toLocaleDateString()}</p>
       </div>
@@ -157,6 +157,6 @@ function renderIssues(issues) {
   issuesNode.innerHTML = elements.join("");
 }
 
-function renderLoading() {}
-
-// fetchIssues();
+function renderLoading() {
+  return ``;
+}
