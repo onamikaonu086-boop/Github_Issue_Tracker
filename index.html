@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>Github Issue Tracker</title>
-
     <style>
       *,
       html,
@@ -16,6 +15,7 @@
         font-family: "Geist", sans-serif;
       }
     </style>
+    <script src="/app.js" defer></script>
   </head>
 
   <body>
@@ -43,7 +43,7 @@
             <label for="password" class="font-semibold">Password</label>
             <input
               id="password"
-              type="text"
+              type="password"
               placeholder="Enter Password"
               class="border border-gray-100 px-4 py-2 rounded-md focus:outline-none focus:border-[#4A00FF] focus:ring-1 focus:ring-[#4A00FF]"
             />
@@ -51,6 +51,10 @@
           </div>
           <button class="bg-[#4A00FF] text-white py-3 font-semibold w-full mt-6 rounded-md">Sign In</button>
         </form>
+
+        <!-- error message -->
+        <div data-error="login-form-error-node" class="mt-4"></div>
+
         <div class="flex items-center gap-2 mt-4 w-full">
           <div class="h-0.5 bg-gray-200 grow"></div>
           OR
