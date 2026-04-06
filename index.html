@@ -34,6 +34,7 @@
             <label for="username" class="font-semibold">Username</label>
             <input
               id="username"
+              name="username"
               type="text"
               placeholder="Enter Username"
               class="border border-gray-100 px-4 py-2 rounded-md focus:outline-none focus:border-[#4A00FF] focus:ring-1 focus:ring-[#4A00FF]"
@@ -44,6 +45,7 @@
             <label for="password" class="font-semibold">Password</label>
             <input
               id="password"
+              name="password"
               type="password"
               placeholder="Enter Password"
               class="border border-gray-100 px-4 py-2 rounded-md focus:outline-none focus:border-[#4A00FF] focus:ring-1 focus:ring-[#4A00FF]"
@@ -72,7 +74,7 @@
     </section>
 
     <!-- Issues Screen -->
-    <section data-screen="issue" class="hidden">
+    <section data-screen="issue" class="hidden bg-[#F8FAFC]">
       <!-- navbar -->
       <nav class="border border-gray-100 shadow-md py-4 bg-white">
         <div class="container mx-auto flex items-center gap-4">
@@ -108,7 +110,7 @@
       </nav>
 
       <!-- filter section -->
-      <div class="bg-white px-4 py-4 container mx-auto mt-12 flex items-center gap-2">
+      <div class="bg-white border border-gray-100 px-4 py-4 container mx-auto mt-12 flex items-center gap-2">
         <button
           data-button="filter"
           data-filter-type="all"
@@ -131,6 +133,34 @@
           Closed
         </button>
       </div>
+
+      <!-- issues section -->
+      <section class="bg-white rounded-md border mt-6 shadow border-gray-100 container mx-auto">
+        <header class="py-4 px-4 border-b bg-white border-gray-100 flex items-center gap-4">
+          <div class="bg-[#ECE4FF] size-12 flex items-center justify-center rounded-full">
+            <img src="/assets/Aperture.png" alt="Aperture-Icon" />
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold"><span data-count="issue">0</span> Issues</h2>
+            <p class="text-gray-500 mt-1">Track and manage your project issues</p>
+          </div>
+          <div class="flex items-center gap-4 ml-auto">
+            <div class="flex items-center gap-2">
+              <div class="size-4 bg-[#00A96E] rounded-full"></div>
+              Open
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="size-4 bg-[#A855F7] rounded-full"></div>
+              Close
+            </div>
+          </div>
+        </header>
+
+        <div
+          data-node="issues"
+          class="bg-[#FBFBFB] p-4 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        ></div>
+      </section>
     </section>
   </body>
 </html>
