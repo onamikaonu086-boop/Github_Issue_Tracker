@@ -22,6 +22,7 @@ const searchInput = document.querySelector(`[data-input="search"]`);
 const searchButton = document.querySelector(`[data-button="search"]`);
 const filterButtons = document.querySelectorAll(`[data-button="filter"]`);
 const issuesNode = document.querySelector(`[data-node="issues"]`);
+const loaderNode = document.querySelector(`[data-node="loader"]`);
 
 // states
 let filter = FILTER_OPTIONS.all;
@@ -31,7 +32,9 @@ let filteredIssues = [];
 
 // main functionality --------------------------------
 async function renderIssueInit() {
+  loaderNode.classList.remove("hidden");
   allIssues = await fetchIssues();
+  loaderNode.classList.add("hidden");
   applyFilter();
 }
 
@@ -41,8 +44,10 @@ function applyFilter() {
   } else {
     filteredIssues = allIssues.filter((issue) => issue.status === filter);
   }
+
   renderIssues(filteredIssues);
   updateIssueCount();
+  loaderNode.classList.add("hidden");
 }
 
 function updateIssueCount() {

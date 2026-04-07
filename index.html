@@ -167,6 +167,27 @@
           </div>
         </header>
 
+        <div data-node="loader" class="hidden bg-[#FBFBFB] p-8 items-center justify-center">
+          <div class="flex flex-col items-center gap-4">
+            <div class="animate-spin">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-8 text-[#4A00FF]"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z"
+                ></path>
+              </svg>
+            </div>
+            <p class="text-gray-500 font-medium">Loading issues...</p>
+          </div>
+        </div>
         <div
           data-node="issues"
           class="bg-[#FBFBFB] p-4 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
