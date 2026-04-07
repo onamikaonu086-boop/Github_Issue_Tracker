@@ -1,128 +1,74 @@
-# 🌟 Welcome To (সহজ সরল সিম্পল) Assignment - 5
+## 1. What is the difference between var, let, and const?
 
-# **📅 Deadline For 60 marks:** 9th March, 2026 (11:59 pm ⏱️)  
-#  📅 No Deadline For 50 marks  
-# **📅 Deadline For 30 marks:** Any time after 9th March.
+Ans :
 
----
+- Var - It is globally scoped, and can be hoisted and re-declared.
+- Let - It is block scoped, and can not be re-declared but can be updated.
+- Const - It is block scoped as well, but we can not re-declare it nor update it.
 
-# Assignment-05: GitHub Issues Tracker
+## 2. What is the spread operator (...)?
 
+Ans : It's a very handy operator we can used this in various case here's some example
 
-### **API Endpoints:**
-###  **All Issues:** 
-  - https://phi-lab-server.vercel.app/api/v1/lab/issues 
+### Copy Array or Object
 
+```js
+const arr = [1, 2, 3];
+const newArray = [...arr]; // [1,2,3]
 
-###  **Single Issue:**
-   - https://phi-lab-server.vercel.app/api/v1/lab/issue/{id}
+// this way newArray is not pointing the reference of arr rather a copy of arr
 
-   - Example: https://phi-lab-server.vercel.app/api/v1/lab/issue/33
-
-
-###  **Search Issue:** https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q={searchText}
-
-   - Example:  https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=notifications
-
-
----
-
-## 📝 Main Requirements
-
-## 🎨 Design Part
-
-## Login Page
-- Create a login page containing a logo, title, and sub-title
-- Below that, there will be 2 inputs, a sign-in button, and a demo credential to sign in. Follow the Figma for this page 
-- Styled as per Figma
-
-## Main Page: 
-
-### Navbar: 
-
-- Navbar with website logo/name on the left
-- Search input and button on the right
-
-### Tab Section like Figma: 
-
-- 3 tab ( All, Open, Closed) at the top of this section.(**All**, **Open**, **Closed**)
-
-- Below the tab, there will be an icon, the issue count, some text on the left, and an open and closed marker on the right
-
-- Responsiveness: The website should be responsive for mobile devices. It is totally up to you. 
-
-
---- 
-
-
-## ⚙️ Functionalities
-- In login page, there will be default admin credentials (username, password). You need to sign in using these credentials.
-
-- Load all issues and display as per Figma
-
-- On clicking on an open or closed tab, it will load the issues data of the related tab and show it in a display-like card in a 4-column layout like Figma. By default, it will show all data 
-
-- Each card shows:
-  - Title
-  - Description
-  - Status 
-  - Author
-  - Priority
-  - Label
-  - CreatedAt
-- Clicking on an issue  card will open a modal and show all the information about that Issue. 
-
-### 🚀 Challenges
-
-
-- Show the card Top border based on their category(open, closed), open card will have Green Boder, closed card will have a purple border on top. 
-
-- Loading spinner on data load
-
-- Show active button on changing category names
-
-- Implement Search Functionality and 8 meaningful github commit.  
-
-- Create a readme file and answer this question on your own. Don’t copy-paste from Google or any AI chatbot. 
-    - 1️⃣ What is the difference between var, let, and const?
-    - 2️⃣ What is the spread operator (...)?
-    - 3️⃣ What is the difference between map(), filter(), and forEach()?
-    - 4️⃣ What is an arrow function?
-    - 5️⃣ What are template literals?
-
-
----
-
-## 🛠️ Technology Stack
-
-- **HTML**
-- **CSS** (Vanilla/Tailwind/DaisyUI)
-- **JavaScript** (Vanilla)
-
----
-
-## 🔑 Demo Credentials
-
-```text
-Username: admin
-Password: admin123
+// same can be done with object
+const me = { name: "Onamika" };
+const myCopy = { ...me }; // { name: "Onamika" };
 ```
 
+## 3. What is the difference between map(), filter(), and forEach()?
 
----
+Ans :
 
-### Optional: 
- - No need to show status: Open, Closed styles On modals. 
- - No Need to show icon on labels 
- - No need to apply styles on Priority 
---- 
+Map - It returns a new array with transformation
 
+```js
+const arr = [1, 2, 3];
+const doubleArr = arr.map((i) => i * 2); // [2,4,6]
+```
 
-## 📤 What to submit
+Filter - It return a new array by filtering which match the condition
 
-- **GitHub Repository Link:**
-- **Live Site Link:**
+```js
+const arr = [1, 2, 3];
+const even = arr.filter((i) => i % 2 === 0); // [2]
+```
 
----
+Foreach - We can perform some action on each element
 
+```js
+// get total of an array
+const arr = [1, 2, 3, 4];
+let total = 0;
+arr.forEach((i) => {
+  total += i;
+});
 
+// total => 10
+```
+
+## 4. What is an arrow function?
+
+Ans : Array function is a shorter way to write function
+
+```js
+// One liner
+const add = (a, b) => a + b;
+const sum = add(10, 2); // 12
+```
+
+## 5. What are template literals?
+
+Ans : We can use this by using backticks (`) it's used to make complex string concatenation
+
+```js
+const name = "Onamika";
+const message = `Hey there ${name}`; // Hey there Onamika
+```
