@@ -23,12 +23,15 @@ const searchButton = document.querySelector(`[data-button="search"]`);
 const filterButtons = document.querySelectorAll(`[data-button="filter"]`);
 const issuesNode = document.querySelector(`[data-node="issues"]`);
 const loaderNode = document.querySelector(`[data-node="loader"]`);
+const modalBackdrop = document.querySelector(`[data-node="modal-backdrop"]`);
+const closeModalButtons = document.querySelectorAll(`[data-button="close-modal"]`);
 
 // states
 let filter = FILTER_OPTIONS.all;
 let isLoading = false;
 let allIssues = [];
 let filteredIssues = [];
+let selectedIssue = null;
 
 // main functionality --------------------------------
 async function renderIssueInit() {
@@ -168,6 +171,17 @@ async function fetchIssues() {
   }
 }
 
+async function fetchIssueById(id) {
+  try {
+    const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`);
+    const resData = await res.json();
+    return resData?.data ?? null;
+  } catch (error) {
+    console.error("Error fetching issue details:", error);
+    return null;
+  }
+}
+
 async function searchIssues(searchText) {
   try {
     isLoading = true;
@@ -184,7 +198,7 @@ async function searchIssues(searchText) {
 }
 
 function renderIssues(issues) {
-  const elements = issues.map((issue) => {
+  const elements = issues.map((issue, index) => {
     const { status, priority, title, description, labels, author, createdAt } = issue ?? {};
 
     const borderColor = status === "open" ? "border-t-[#00A96E]" : "border-t-[#A855F7]";
@@ -204,7 +218,7 @@ function renderIssues(issues) {
     });
 
     return /* html */ `
-    <div class="bg-white p-4 rounded-md border border-gray-100 shadow-md border-t-4 h-full flex flex-col ${borderColor}">
+    <div class="bg-white p-4 rounded-md border border-gray-100 shadow-md border-t-4 h-full flex flex-col ${borderColor} cursor-pointer hover:shadow-lg transition-shadow" data-issue-index="${index}">
       <header class="flex items-center gap-4 justify-between">
         <img src="${src}" alt="Status-${status === "open" ? "Open" : "Closed"}" />
         <p class="uppercase rounded-full w-20 py-0.5 text-center text-sm ${priorityClass}">${priority}</p>
@@ -225,8 +239,105 @@ function renderIssues(issues) {
   });
 
   issuesNode.innerHTML = elements.join("");
+
+  // Add click handlers to cards
+  const cards = document.querySelectorAll(`[data-issue-index]`);
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const index = parseInt(card.dataset.issueIndex);
+      openModal(filteredIssues[index]);
+    });
+  });
 }
 
 function renderLoading() {
   return ``;
 }
+
+// Modal functions
+async function openModal(issue) {
+  selectedIssue = issue;
+
+  // Show modal and loader
+  modalBackdrop.classList.remove("hidden");
+  modalBackdrop.classList.add("flex");
+  document.body.style.overflow = "hidden";
+
+  const loaderElement = document.querySelector(`[data-modal="loader"]`);
+  const contentElement = document.querySelector(`[data-modal="content"]`);
+
+  // Show loader, hide content
+  loaderElement.classList.remove("hidden");
+  contentElement.classList.add("hidden");
+
+  // Fetch full issue data by ID
+  const fullIssue = await fetchIssueById(issue.id);
+
+  if (!fullIssue) {
+    contentElement.innerHTML = `<p class="text-red-500">Failed to load issue details</p>`;
+    loaderElement.classList.add("hidden");
+    contentElement.classList.remove("hidden");
+    return;
+  }
+
+  // Populate modal with issue data
+  document.querySelector(`[data-modal="title"]`).textContent = fullIssue.title;
+  document.querySelector(`[data-modal="description"]`).textContent = fullIssue.description;
+  document.querySelector(`[data-modal="author"]`).textContent = fullIssue.author;
+  document.querySelector(`[data-modal="created-date"]`).textContent = new Date(
+    fullIssue.createdAt,
+  ).toLocaleDateString();
+  document.querySelector(`[data-modal="assignee"]`).textContent = fullIssue.author || "N/A";
+
+  // Set priority
+  const priorityElement = document.querySelector(`[data-modal="priority"]`);
+  const priorityClass =
+    fullIssue.priority === "high"
+      ? "bg-[#FEECEC] text-[#EF4444]"
+      : fullIssue.priority === "medium"
+        ? "bg-[#FEF3C7] text-[#D97706]"
+        : "bg-[#E2E8F0] text-[#475569]";
+  priorityElement.textContent = fullIssue.priority?.toUpperCase() || "LOW";
+  priorityElement.className = `inline-block px-3 py-1 rounded-full text-sm font-semibold ${priorityClass}`;
+
+  // Set status icon
+  const statusIcon = document.querySelector(`[data-modal="status-icon"]`);
+  statusIcon.src = fullIssue.status === "open" ? "/assets/Open-Status.png" : "/assets/Closed-Status.png";
+
+  // Set labels
+  const labelsContainer = document.querySelector(`[data-modal="labels-container"]`);
+  const labelsElement = document.querySelector(`[data-modal="labels"]`);
+  if (fullIssue.labels && fullIssue.labels.length > 0) {
+    labelsContainer.classList.remove("hidden");
+    labelsElement.innerHTML = (fullIssue.labels ?? [])
+      .map(
+        (label) =>
+          `<span class="text-xs border font-medium px-2 py-0.5 rounded-full uppercase border-[#FDE68A] bg-[#FFF8DB] text-[#D97706]">${label}</span>`,
+      )
+      .join("");
+  } else {
+    labelsContainer.classList.add("hidden");
+  }
+
+  // Hide loader, show content
+  loaderElement.classList.add("hidden");
+  contentElement.classList.remove("hidden");
+}
+
+function closeModal() {
+  modalBackdrop.classList.add("hidden");
+  modalBackdrop.classList.remove("flex");
+  document.body.style.overflow = "";
+  selectedIssue = null;
+}
+
+// Modal event listeners
+closeModalButtons.forEach((button) => {
+  button.addEventListener("click", closeModal);
+});
+
+modalBackdrop.addEventListener("click", (e) => {
+  if (e.target === modalBackdrop) {
+    closeModal();
+  }
+});
