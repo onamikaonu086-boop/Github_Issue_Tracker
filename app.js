@@ -31,11 +31,26 @@ let filteredIssues = [];
 
 // main functionality --------------------------------
 async function renderIssueInit() {
-  const allIssues = await fetchIssues();
-  renderIssues(allIssues);
+  allIssues = await fetchIssues();
+  applyFilter();
 }
 
-renderIssueInit();
+function applyFilter() {
+  if (filter === FILTER_OPTIONS.all) {
+    filteredIssues = allIssues;
+  } else {
+    filteredIssues = allIssues.filter((issue) => issue.status === filter);
+  }
+  renderIssues(filteredIssues);
+  updateIssueCount();
+}
+
+function updateIssueCount() {
+  const issueCountNode = document.querySelector(`[data-count="issue"]`);
+  if (issueCountNode) {
+    issueCountNode.textContent = filteredIssues.length;
+  }
+}
 
 // event handlers
 // login
@@ -45,13 +60,13 @@ loginForm.addEventListener("submit", (e) => {
   const username = e.target.username.value;
   const password = e.target.password.value;
 
+  // Validate all inputs first
   if (!username?.trim()) {
     loginFormErrorNode.innerHTML = `
     <p class="text-red-500 text-sm font-medium">Please Add User Name</p>
   `;
     return;
   }
-
   if (!password?.trim()) {
     loginFormErrorNode.innerHTML = `
     <p class="text-red-500 text-sm font-medium">Please Add User Password</p>
@@ -59,15 +74,20 @@ loginForm.addEventListener("submit", (e) => {
     return;
   }
 
-  if (username === USER_NAME && password === PASSWORD) {
-    loginScreen.classList.add("hidden");
-    issuesScreen.classList.remove("hidden");
+  // check if credentials are correct
+  if (username !== USER_NAME || password !== PASSWORD) {
+    loginFormErrorNode.innerHTML = `
+    <p class="text-red-500 text-sm font-medium">Invalid Credentials, Please try again</p>
+  `;
+
     return;
   }
 
-  loginFormErrorNode.innerHTML = `
-    <p class="text-red-500 text-sm font-medium">Invalid Credentials, Please try again</p>
-  `;
+  // All checks passed - render everything
+  loginFormErrorNode.innerHTML = "";
+  loginScreen.classList.add("hidden");
+  issuesScreen.classList.remove("hidden");
+  renderIssueInit();
 });
 
 // click on filter buttons
@@ -91,12 +111,11 @@ filterButtons.forEach((button) => {
       filterButton.classList.remove(...ACTIVE_FILTER_CLASSES);
       filterButton.classList.add(...INACTIVE_FILTER_CLASSES);
     });
+
+    // Apply the filter to issues
+    applyFilter();
   });
 });
-
-// for now to show the issue screen without login, later we will remove this code and add the login functionality
-loginScreen.classList.add("hidden");
-issuesScreen.classList.remove("hidden");
 
 // helper functions ----------------------------------
 async function fetchIssues() {
