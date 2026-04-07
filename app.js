@@ -122,6 +122,37 @@ filterButtons.forEach((button) => {
   });
 });
 
+// search button
+searchButton.addEventListener("click", async () => {
+  const searchText = searchInput.value?.trim();
+
+  loaderNode.classList.remove("hidden");
+
+  if (!searchText) {
+    // If search is empty, show all issues
+    allIssues = await fetchIssues();
+  } else {
+    // If search has text, search for issues
+    allIssues = await searchIssues(searchText);
+  }
+
+  filter = FILTER_OPTIONS.all;
+
+  // Reset filter buttons to "All"
+  filterButtons.forEach((filterButton) => {
+    if (filterButton.dataset.filterType === FILTER_OPTIONS.all) {
+      filterButton.classList.add(...ACTIVE_FILTER_CLASSES);
+      filterButton.classList.remove(...INACTIVE_FILTER_CLASSES);
+    } else {
+      filterButton.classList.remove(...ACTIVE_FILTER_CLASSES);
+      filterButton.classList.add(...INACTIVE_FILTER_CLASSES);
+    }
+  });
+
+  loaderNode.classList.add("hidden");
+  applyFilter();
+});
+
 // helper functions ----------------------------------
 async function fetchIssues() {
   try {
@@ -131,6 +162,21 @@ async function fetchIssues() {
     return resData?.data ?? [];
   } catch (error) {
     console.error("Error fetching issues:", error);
+    return [];
+  } finally {
+    isLoading = false;
+  }
+}
+
+async function searchIssues(searchText) {
+  try {
+    isLoading = true;
+    const searchUrl = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${encodeURIComponent(searchText)}`;
+    const res = await fetch(searchUrl);
+    const resData = await res.json();
+    return resData?.data ?? [];
+  } catch (error) {
+    console.error("Error searching issues:", error);
     return [];
   } finally {
     isLoading = false;
